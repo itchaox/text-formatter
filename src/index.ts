@@ -25,61 +25,40 @@ basekit.addField({
   i18n: {
     messages: {
       'zh-CN': {
-        source: '选择待转换的字段',
-        changeType: '预置转换类型',
+        source: '待转换字段',
+        changeType: '排版规则',
         fun: '自定义转换函数',
-        placeholder: '请填写具体的 JavaScript 转换函数',
-        p1: '请选择文本或数字类型字段',
-        0: '自定义转换函数',
-        1: '二进制 -> 十进制',
-        2: '二进制 -> 十六进制',
-        3: '十进制 -> 二进制',
-        4: '十进制 -> 十六进制',
-        5: '十六进制 -> 二进制',
-        6: '十六进制 -> 十进制',
-        7: 'RGB -> HEX',
-        8: 'HEX -> RGB',
-        9: '当未选择『自定义转换函数』时，将使用所选的预置转换类型进行转换。',
-        10: '更多详情，请参考',
-        11: ' 使用文档',
+        p1: '请选择文本类型字段',
+        1: '中文和英文之间需要空格',
+        2: '中文和数字之间需要空格',
+        3: '移除数字与符号（如度数、百分比 等）之间的空格',
+        4: '统一为中文标点符号',
+        5: '统一为英文标点符号',
+        6: '全角标点与其他字符之间不加空格',
       },
       'en-US': {
-        source: 'Select the field to convert',
-        changeType: 'Preset Conversion Type',
-        fun: 'Custom Conversion Function',
-        placeholder: 'Please provide the specific JavaScript conversion function.',
-        p1: 'Please select a text or numeric field.',
-        0: 'Custom conversion function',
-        1: 'Binary -> Decimal',
-        2: 'Binary -> Hexadecimal',
-        3: 'Decimal -> Binary',
-        4: 'Decimal -> Hexadecimal',
-        5: 'Hexadecimal -> Binary',
-        6: 'Hexadecimal -> Decimal',
-        7: 'RGB -> HEX',
-        8: 'HEX -> RGB',
-        9: 'If the “Custom conversion function” option is not selected, the conversion will use the chosen preset conversion type.',
-        10: 'For more details, please refer to',
-        11: ' User documentation',
+        source: 'Field to be converted',
+        changeType: 'Typography rules',
+        fun: 'Custom conversion function',
+        p1: 'Please select a text type field',
+        1: 'Add space between Chinese characters and English characters',
+        2: 'Add space between Chinese characters and numbers',
+        3: 'Remove space between numbers and symbols (such as degrees, percentages, etc.)',
+        4: 'Standardize to Chinese punctuation marks',
+        5: 'Standardize to English punctuation marks',
+        6: 'No space between full-width punctuation marks and other characters',
       },
       'ja-JP': {
-        source: '変換するフィールドを選択',
-        changeType: 'プリセット変換タイプ',
+        source: '変換対象のフィールド',
+        changeType: 'タイポグラフィルール',
         fun: 'カスタム変換関数',
-        placeholder: '具体的なJavaScript変換関数を記入してください。',
-        p1: 'テキストまたは数値型のフィールドを選択してください。',
-        0: 'カスタム変換関数',
-        1: 'バイナリ -> 十進法',
-        2: 'バイナリ -> 十六進法',
-        3: '十進法 -> バイナリ',
-        4: '十進法 -> 十六進法',
-        5: '十六進法 -> バイナリ',
-        6: '十六進法 -> 十進法',
-        7: 'RGB -> HEX',
-        8: 'HEX -> RGB',
-        9: '「カスタム変換関数」が選択されていない場合は、選択したプリセット変換タイプを使用して変換を行います。',
-        10: '詳細については、参照してください',
-        11: ' 使用文書',
+        p1: 'テキストタイプのフィールドを選択してください',
+        1: '中国語と英語の間にスペースを追加する',
+        2: '中国語と数字の間にスペースを追加する',
+        3: '数字と記号（度数、パーセントなど）の間のスペースを削除する',
+        4: '中国語の句読点に統一する',
+        5: '英語の句読点に統一する',
+        6: '全角句読点と他の文字の間にスペースを入れない',
       },
     },
   },
@@ -90,7 +69,7 @@ basekit.addField({
       label: t('source'),
       component: FieldComponent.FieldSelect,
       props: {
-        supportType: [FieldType.Number, FieldType.Text],
+        supportType: [FieldType.Text],
         placeholder: t('p1'),
       },
       validator: {
@@ -100,48 +79,20 @@ basekit.addField({
     {
       key: 'changeType',
       label: t('changeType'),
-      component: FieldComponent.SingleSelect,
-      tooltips: [
-        {
-          type: 'text',
-          content: t('9'),
-        },
-      ],
+      component: FieldComponent.MultipleSelect,
       props: {
         options: [
-          { label: t('0'), value: 0 },
           { label: t('1'), value: 1 },
           { label: t('2'), value: 2 },
           { label: t('3'), value: 3 },
           { label: t('4'), value: 4 },
           { label: t('5'), value: 5 },
           { label: t('6'), value: 6 },
-          { label: t('7'), value: 7 },
-          { label: t('8'), value: 8 },
         ],
       },
       validator: {
         required: true,
       },
-    },
-    {
-      key: 'fun',
-      label: t('fun'),
-      component: FieldComponent.Input,
-      props: {
-        placeholder: t('placeholder'),
-      },
-      tooltips: [
-        {
-          type: 'text',
-          content: t('10'),
-        },
-        {
-          type: 'link',
-          text: t('11'),
-          link: 'https://bcmcjimpjd.feishu.cn/base/I7AWbeSTLafqaJsTJ4BcmCF2nMg?table=ldxyob7oZYiCcGzh',
-        },
-      ],
     },
   ],
   // 定义捷径的返回结果类型
@@ -152,18 +103,108 @@ basekit.addField({
   execute: async (formItemParams: { changeType: any; source: { type: string; text: string }[] | number; fun: any }) => {
     const { source, fun, changeType } = formItemParams;
 
+    const _arr = changeType.map((i) => i.value);
+
     // 数字类型 source 直接为值
     //  文本类型 source 为 [{ type: 'text , text '8'}]
     const sourceValue = Array.isArray(source) && source.length > 0 ? source[0].text : source;
 
-    let targetValueFun: any = '';
-    if (changeType.value === 0) {
-      targetValueFun = new Function('return ' + fun)();
+    function targetValueFun(input) {
+      let result = input;
+
+      // 1. 中文和英文之间需要空格
+      if (_arr.includes(1)) {
+        result = result
+          // 中文与英文/数字之间
+          .replace(/([\u4e00-\u9fa5])([a-zA-Z])/g, '$1 $2')
+          // 英文/数字与中文之间
+          .replace(/([a-zA-Z])([\u4e00-\u9fa5])/g, '$1 $2');
+      }
+
+      // 2. 中文和数字之间需要空格
+      if (_arr.includes(2)) {
+        result = result
+          // 中文与英文/数字之间
+          .replace(/([\u4e00-\u9fa5])([0-9])/g, '$1 $2')
+          // 英文/数字与中文之间
+          .replace(/([0-9])([\u4e00-\u9fa5])/g, '$1 $2');
+      }
+
+      // 3. 移除数字与符号之间的空格
+      if (_arr.includes(3)) {
+        result = result
+          // 移除数字与符号之间的空格
+          .replace(/(\d+)\s*(度|%|°|￥|\$|kg|cm|mm|g|m|km|lbs|oz)/g, '$1$2');
+      }
+
+      // 4. 统一符号为中文符号，如 , 替换为 ，
+      if (_arr.includes(4)) {
+        result = result
+          // 英文逗号替换为中文逗号
+          .replace(/,/g, '，')
+          // 英文句号替换为中文句号
+          .replace(/\./g, '。')
+          // 英文问号替换为中文问号
+          .replace(/\?/g, '？')
+          // 英文感叹号替换为中文感叹号
+          .replace(/!/g, '！')
+          // 英文冒号替换为中文冒号
+          .replace(/:/g, '：')
+          // 英文分号替换为中文分号
+          .replace(/;/g, '；')
+          // 英文引号替换为中文引号
+          .replace(/"/g, '“')
+          // 英文单引号替换为中文单引号
+          .replace(/'/g, '‘')
+          // 英文括号替换为中文括号
+          .replace(/\(/g, '（')
+          .replace(/\)/g, '）')
+          // 英文中横线替换为中文破折号
+          .replace(/-/g, '——')
+          // 替换省略号
+          .replace(/\.{3}/g, '……');
+      }
+
+      // 统一为英文标点符号;
+      if (_arr.includes(5)) {
+        result = result
+          // 中文逗号替换为英文逗号
+          .replace(/，/g, ',')
+          // 中文句号替换为英文句号
+          .replace(/。/g, '.')
+          // 中文问号替换为英文问号
+          .replace(/？/g, '?')
+          // 中文感叹号替换为英文感叹号
+          .replace(/！/g, '!')
+          // 中文冒号替换为英文冒号
+          .replace(/：/g, ':')
+          // 中文分号替换为英文分号
+          .replace(/；/g, ';')
+          // 中文双引号替换为英文双引号
+          .replace(/“/g, '"')
+          // 中文单引号替换为英文单引号
+          .replace(/‘/g, "'")
+          // 中文括号替换为英文括号
+          .replace(/（/g, '(')
+          .replace(/）/g, ')')
+          // 中文破折号替换为英文中横线
+          .replace(/——/g, '-')
+          // 中文省略号替换为英文省略号
+          .replace(/……/g, '...');
+      }
+
+      // 全角标点与其他字符之间不加空格
+      if (_arr.includes(6)) {
+        result = result // 移除全角标点（如中文逗号、句号等）后的空格
+          .replace(/([，。！？；：、【】《》〔〕（）……])\s+/g, '$1')
+          // 移除全角标点（如中文逗号、句号等）前的空格
+          .replace(/\s+([，。！？；：、【】《》〔〕（）……])/g, '$1');
+      }
+      return result;
     }
 
     // 选了预置转换类型，则以预置转换类型为准
-    let targetValue =
-      changeType.value !== 0 ? Conversion[fnMap[changeType.value]](sourceValue) : targetValueFun(sourceValue);
+    let targetValue = targetValueFun(sourceValue);
 
     try {
       return {
