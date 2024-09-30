@@ -113,9 +113,9 @@ basekit.addField({
       sourceValue = source
         .map((i) => {
           if (i.type === 'text') {
-            return i.text;
+            return targetValueFun(i.text);
           } else if (i.type === 'mention') {
-            return i?.link || i?.text;
+            return i?.link || targetValueFun(i?.text);
           }
 
           if (i.type === 'url') {
@@ -126,8 +126,6 @@ basekit.addField({
     } else {
       sourceValue = source;
     }
-
-    console.log('ttttt', sourceValue, source);
 
     function targetValueFun(input) {
       let result = input;
@@ -224,7 +222,7 @@ basekit.addField({
     }
 
     // 选了预置转换类型，则以预置转换类型为准
-    let targetValue = targetValueFun(sourceValue);
+    let targetValue = sourceValue;
 
     try {
       return {
