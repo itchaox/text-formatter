@@ -100,14 +100,34 @@ basekit.addField({
     type: FieldType.Text,
   },
   // formItemParams 为运行时传入的字段参数，对应字段配置里的 formItems （如引用的依赖字段）
-  execute: async (formItemParams: { changeType: any; source: { type: string; text: string }[] | number; fun: any }) => {
+  execute: async (formItemParams: { changeType: any; source: any[] | number; fun: any }) => {
     const { source, fun, changeType } = formItemParams;
 
     const _arr = changeType.map((i) => i.value);
 
     // 数字类型 source 直接为值
     //  文本类型 source 为 [{ type: 'text , text '8'}]
-    const sourceValue = Array.isArray(source) && source.length > 0 ? source[0].text : source;
+
+    let sourceValue;
+    if (Array.isArray(source) && source.length > 0) {
+      sourceValue = source
+        .map((i) => {
+          if (i.type === 'text') {
+            return i.text;
+          } else if (i.type === 'mention') {
+            return i?.link || i?.text;
+          }
+
+          if (i.type === 'url') {
+            return i?.link;
+          }
+        })
+        .join('');
+    } else {
+      sourceValue = source;
+    }
+
+    console.log('ttttt', sourceValue, source);
 
     function targetValueFun(input) {
       let result = input;
@@ -210,6 +230,7 @@ basekit.addField({
       return {
         code: FieldCode.Success,
         data: targetValue,
+        // data: source,
       };
     } catch (e) {
       return {
